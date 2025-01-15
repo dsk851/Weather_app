@@ -12,7 +12,7 @@
     <div class="card">
         <div class="search">
             <input class="text" placeholder="enter the city name"></input>
-            <button><img src="images/search.png" alt=""></button>
+            <button class="fetch_weather_infos"><img src="images/search.png" alt=""></button>
         </div>
 
         <div class="weather">
@@ -39,25 +39,36 @@
     </div>
 
     <script>
-        const ApiKey = "ab67476644411402c16da91c03898d7b";
 
-        const ApiUrl = "https://api.tomorrow.io/v4/weather/forecast?location=fes&apikey=xjXUc4L78Msap9Nd9T3lgacis4cBJXeK";
+        // --- weatherstack API 
+        const ApiKey = "acbd2352f8194d73f8091a686015768e";
 
-        async function checkWeather() {
-            const response = await fetch(ApiUrl);
-            let data = response.json();
+        const url = 'http://api.weatherstack.com/current?access_key=' + ApiKey + '&query=';
+        async function checkWeather(city = "Fes") {
+            const response = await fetch(url + city);
+            if (!response.ok) {
+                console.error("Erreur lors de la récupération des données :", response.statusText);
+                return;
+            }
 
-            console.log("ckeckpoint")
-            console.log(response)
-            console.log(data)
+            const data = await response.json();
+
+            console.log("Données reçues :", data);
+
 
             document.querySelector(".city").innerHTML = data.location.name;
-            // document.querySelector(".temp").innerHTML = data.timelines.daily[0].values.
-            // temperatureApparentMax;
-            // document.querySelector(".humidity").innerHTML = data.main.humidity;
-            // document.querySelector(".wind").innerHTML = data.wind.speed;
+            document.querySelector(".temp").innerHTML = data.current.temperature + "°C";
+            document.querySelector(".humidity").innerHTML = data.current.humidity + "%";
+            document.querySelector(".wind").innerHTML = data.current.wind_speed + " km/h";
         }
-        checkWeather();
+        document.querySelector(".fetch_weather_infos").addEventListener("click", () => {
+            let city = document.querySelector(".text").value;
+            checkWeather(city);
+        });
+
+        city = "paris"
+        checkWeather(city);
+
     </script>
 </body>
 
