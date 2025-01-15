@@ -41,11 +41,12 @@
     <script>
 
         // --- weatherstack API 
-        const ApiKey = "acbd2352f8194d73f8091a686015768e";
 
-        const url = 'http://api.weatherstack.com/current?access_key=' + ApiKey + '&query=';
         async function checkWeather(city = "Fes") {
-            const response = await fetch(url + city);
+            const ApiKey = "acbd2352f8194d73f8091a686015768e";
+
+            const url = 'http://api.weatherstack.com/current?access_key=' + ApiKey + '&query=' + city;
+            const response = await fetch(url);
             if (!response.ok) {
                 console.error("Erreur lors de la récupération des données :", response.statusText);
                 return;
